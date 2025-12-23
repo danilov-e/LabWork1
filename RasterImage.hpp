@@ -17,3 +17,4 @@ public:
     ColorRGB pixel(int x, int y) const override { return pixels[y * w + x]; }
     void setPixel(int x, int y, ColorRGB c) override { pixels[y * w + x] = c; }
 };
+#endif

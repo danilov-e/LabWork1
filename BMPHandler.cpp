@@ -1,4 +1,4 @@
-sx#include "BMPHandler.hpp"
+#include "BMPHandler.hpp"
 #include <fstream>
 #include <stdexcept>
 

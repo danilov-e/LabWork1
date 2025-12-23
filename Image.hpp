@@ -17,3 +17,4 @@ public:
     virtual ColorRGB pixel(int x, int y) const = 0;
     virtual void setPixel(int x, int y, ColorRGB c) = 0;
 };
+#endif
