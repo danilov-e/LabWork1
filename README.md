@@ -5,7 +5,7 @@
 st141853@student.spbu.ru
 ## Description
 Laboratory Work 1.
-Provides an ability to load and save uncompressed 24-bit BMP images (supports BITMAPINFOHEADER and row padding alignment).
+Provides an ability to load and save uncompressed 24-bit BMP images (supports BITMAPINFOHEADER and row padding alignment)
 Rotate images:
 90° clockwise,
 90° counter-clockwise.
