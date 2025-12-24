@@ -8,8 +8,8 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Wpedantic -pthread
 GTEST_LIBS = -lgtest -lgtest_main -pthread
 
-TEST_SRC = tests.cpp BMPHandler.cpp ImageOps.cpp
-MAIN_SRC = main.cpp BMPHandler.cpp ImageOps.cpp
+TEST_SRC = tests.cpp BMPHandler.cpp ImageOps.cpp RasterImage.cpp
+MAIN_SRC = main.cpp BMPHandler.cpp ImageOps.cpp RasterImage.cpp
 
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 MAIN_OBJ = $(MAIN_SRC:.cpp=.o)

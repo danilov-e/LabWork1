@@ -34,11 +34,20 @@ struct BMPInfoHeader
     uint32_t colorsUsed = 0;
     uint32_t colorsImportant = 0;
 };
+
+static const uint16_t bmp_signature = 0x4D42;
+static const int file_header_size = 14;
+static const int info_header_size = 40;
+static const int total_header_size = 54;
+static const int bytes_per_pixel = 3;
+static const int bits_per_pixel = 24;
+static const int row_alignment = 4;
+
 #pragma pack(pop)
 
 static int rowPadding(int width)
 {
-    return (4 - (width * 3) % 4) % 4;
+    return (row_alignment - (width * bytes_per_pixel) % row_alignment) % row_alignment;
 }
 
 RasterImage BMPHandler::load(const std::filesystem::path& path)
@@ -48,10 +57,10 @@ RasterImage BMPHandler::load(const std::filesystem::path& path)
 
     BMPFileHeader fileHdr;
     BMPInfoHeader infoHdr;
-    f.read(reinterpret_cast<char*>(&fileHdr), 14);
-    f.read(reinterpret_cast<char*>(&infoHdr), 40);
+    f.read(reinterpret_cast<char*>(&fileHdr), file_header_size);
+    f.read(reinterpret_cast<char*>(&infoHdr), info_header_size);
 
-    if (fileHdr.type != 0x4D42 || infoHdr.bpp != 24 || infoHdr.compression != 0)
+    if (fileHdr.type != bmp_signature || infoHdr.bpp != bits_per_pixel || infoHdr.compression != 0)
         throw std::runtime_error("Unsupported BMP format");
 
     f.seekg(fileHdr.offset);
@@ -80,14 +89,14 @@ void BMPHandler::save(const std::filesystem::path& path, const Image& img)
 
     int w = img.width(), h = img.height();
     int pad = rowPadding(w);
-    int rowSize = w * 3 + pad;
+    int rowSize = w * bytes_per_pixel + pad;
     int dataSize = rowSize * h;
 
-    BMPFileHeader fileHdr{0x4D42, uint32_t(14 + 40 + dataSize), 0, 0, 54};
-    BMPInfoHeader infoHdr{40, w, h};
+    BMPFileHeader fileHdr{bmp_signature, uint32_t(file_header_size + info_header_size + dataSize), 0, 0, total_header_size};
+    BMPInfoHeader infoHdr{info_header_size, w, h};
 
-    f.write(reinterpret_cast<const char*>(&fileHdr), 14);
-    f.write(reinterpret_cast<const char*>(&infoHdr), 40);
+    f.write(reinterpret_cast<const char*>(&fileHdr), file_header_size);
+    f.write(reinterpret_cast<const char*>(&infoHdr), info_header_size);
 
     for (int y = 0; y < h; ++y)
     {

@@ -17,24 +17,12 @@ class RasterImage : public Image
     std::vector<ColorRGB> pixels;
 
 public:
-    RasterImage(int width, int height)
-        : w(width), h(height), pixels(width * height) {}
+    RasterImage(int width, int height);
 
-    int width() const override
-    {
-        return w;
-    }
-    int height() const override
-    {
-        return h;
-    }
-    ColorRGB pixel(int x, int y) const override
-    {
-        return pixels[y * w + x];
-    }
-    void setPixel(int x, int y, ColorRGB c) override
-    {
-        pixels[y * w + x] = c;
-    }
+    int width() const override;
+    int height() const override;
+    ColorRGB pixel(int x, int y) const override;
+    void setPixel(int x, int y, ColorRGB c) override;
 };
+
 #endif
