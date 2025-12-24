@@ -1,9 +1,18 @@
+/*
+ * Egor Danilov
+ * st141853@student.spbu.ru
+ * My laboratory work 1
+ */
+
+
+
 #include "BMPHandler.hpp"
 #include <fstream>
 #include <stdexcept>
 
 #pragma pack(push, 1)
-struct BMPFileHeader {
+struct BMPFileHeader
+{
     uint16_t type;
     uint32_t size;
     uint16_t reserved1 = 0;
@@ -11,7 +20,8 @@ struct BMPFileHeader {
     uint32_t offset;
 };
 
-struct BMPInfoHeader {
+struct BMPInfoHeader
+{
     uint32_t size = 40;
     int32_t width;
     int32_t height;
@@ -26,11 +36,13 @@ struct BMPInfoHeader {
 };
 #pragma pack(pop)
 
-static int rowPadding(int width) {
+static int rowPadding(int width)
+{
     return (4 - (width * 3) % 4) % 4;
 }
 
-RasterImage BMPHandler::load(const std::filesystem::path& path) {
+RasterImage BMPHandler::load(const std::filesystem::path& path)
+{
     std::ifstream f(path, std::ios::binary);
     if (!f) throw std::runtime_error("Cannot open file: " + path.string());
 
@@ -46,8 +58,10 @@ RasterImage BMPHandler::load(const std::filesystem::path& path) {
     RasterImage img(infoHdr.width, infoHdr.height);
     int pad = rowPadding(infoHdr.width);
 
-    for (int y = 0; y < infoHdr.height; ++y) {
-        for (int x = 0; x < infoHdr.width; ++x) {
+    for (int y = 0; y < infoHdr.height; ++y)
+    {
+        for (int x = 0; x < infoHdr.width; ++x)
+        {
             uint8_t b, g, r;
             f.read(reinterpret_cast<char*>(&b), 1);
             f.read(reinterpret_cast<char*>(&g), 1);
@@ -59,7 +73,8 @@ RasterImage BMPHandler::load(const std::filesystem::path& path) {
     return img;
 }
 
-void BMPHandler::save(const std::filesystem::path& path, const Image& img) {
+void BMPHandler::save(const std::filesystem::path& path, const Image& img)
+{
     std::ofstream f(path, std::ios::binary);
     if (!f) throw std::runtime_error("Cannot write to: " + path.string());
 
@@ -74,8 +89,10 @@ void BMPHandler::save(const std::filesystem::path& path, const Image& img) {
     f.write(reinterpret_cast<const char*>(&fileHdr), 14);
     f.write(reinterpret_cast<const char*>(&infoHdr), 40);
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
             ColorRGB c = img.pixel(x, h - 1 - y);
             f.put(static_cast<char>(c.b));
             f.put(static_cast<char>(c.g));

@@ -1,15 +1,23 @@
+/*
+ * Egor Danilov
+ * st141853@student.spbu.ru
+ * My laboratory work 1
+ */
+
 #ifndef IMAGE_HPP
 #define IMAGE_HPP
 
 #include <cstdint>
 
-struct ColorRGB {
+struct ColorRGB
+{
     uint8_t r = 0, g = 0, b = 0;
     ColorRGB() = default;
     ColorRGB(uint8_t r_, uint8_t g_, uint8_t b_) : r(r_), g(g_), b(b_) {}
 };
 
-class Image {
+class Image
+{
 public:
     virtual ~Image() = default;
     virtual int width() const = 0;
